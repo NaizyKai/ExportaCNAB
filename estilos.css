@@ -1,0 +1,51 @@
+label,  input {
+    display: block;
+    float: left;
+}
+
+label {	
+    text-align: right;
+    width: 120px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+}
+
+br {
+    clear: left;
+}
+
+body {	font-family: verdana;
+       font-size: 10px;}
+
+.edt_uppercase { text-transform: uppercase; }
+
+table
+{
+    border-collapse:collapse;
+}
+table,th, td
+{
+    border: 1px solid black;
+    font-size: 10px;
+}
+
+#dv_pesquisa  {
+	width: 400px;
+	height: 400px;
+	float: left;
+	position: absolute;
+	background-color: #D8D8D8;
+}
+
+#btn_fechar {
+	left: 370px;
+	position: absolute;
+}
+
+#dv_getConta {
+	width: 400px;
+	height: 400px;
+	float: left;
+	position: absolute;
+	background-color: #D8D8D8;
+}
