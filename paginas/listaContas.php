@@ -16,14 +16,14 @@
             include_once('../dao/config.php');
 
             $con = getConexao();
-            $sql = "Select Descricao, Codigo From Contas order by Descricao";
+            $sql = "SELECT DESCRICAO, CODIGO FROM contas ORDER BY DESCRICAO";
             if (!$res = mysqli_query($con, $sql, MYSQL_ASSOC)) {
                 die('Erro: ' . die(mysqli_error($con)));
             }
             while ($escrever = mysqli_fetch_array($res)) {
 				echo("<tr>");
-                echo("<td>". $escrever["Codigo"] . "</td>");
-				echo("<td><a href=\"contas_cad.php?editar=" . $escrever["Codigo"] ." \">" . $escrever["Descricao"] . "</a></td>");
+                echo("<td>". $escrever["CODIGO"] . "</td>");
+				echo("<td><a href=\"contas_cad.php?editar=" . $escrever["CODIGO"] ." \">" . $escrever["DESCRICAO"] . "</a></td>");
 				echo("</tr>");
             }
             ?>

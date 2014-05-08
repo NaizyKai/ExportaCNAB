@@ -52,6 +52,6 @@ function getNovoNome($conta) {
     } else {
         $ext = "rm" . $qtdExp;
     }    
-    $nome = str_pad($conta->conta, 5, '0', STR_PAD_LEFT) . '.' . $mes . str_pad(date("d"), 2, '0', STR_PAD_LEFT) . "." . $ext;
+    $nome = strtoupper(str_pad($conta->conta, 5, '0', STR_PAD_LEFT) . $mes . str_pad(date("d"), 2, '0', STR_PAD_LEFT) . "." . $ext);
     return $nome;
 }

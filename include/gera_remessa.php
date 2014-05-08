@@ -15,6 +15,16 @@ class GeradorRemessaSicredi {
         }
         mysqli_close($con);
     }
+	
+	
+	function removeMascara($Texto) {
+		$strChar = ".-/\\*,";
+		
+		for ($i = 0; $i < strlen($strChar); $i++) {
+			$Texto = str_replace(substr($strChar, $i, 1), "", $Texto);			
+		}			
+		return $Texto;
+	}
 
     function geraRemessa($outputArquivo) {
         $saida = $this->geraHeaderArquivo();
@@ -94,14 +104,14 @@ class GeradorRemessaSicredi {
             $detalhe .= str_repeat("0", 13);               // 206 a 218 - valor abatimento
             $detalhe .= ($boleto->cliente->tipo_pessoa == "F" ? "1" : "2");       // 219 - Tipo pessoa
             $detalhe .= "0";                   // 220 - Filler
-            $detalhe .= str_pad($boleto->cliente->cpf_cnpj, 14, '0', STR_PAD_LEFT);     // 221 a 234 - CPF / CNPJ DO PAGADOR
+            $detalhe .= $this->removeMascara(str_pad($boleto->cliente->cpf_cnpj, 14, '0', STR_PAD_LEFT));     // 221 a 234 - CPF / CNPJ DO PAGADOR
             $detalhe .= substr(str_pad($boleto->cliente->nome, 40, ' ', STR_PAD_RIGHT), 0, 40);  // 235 a 274 - nome do pagador
             $detalhe .= substr(str_pad($boleto->cliente->endereco, 40, ' ', STR_PAD_RIGHT), 0, 40); // 275 a 314 - endere�o do pagador
             $detalhe .= "00000";                  // 315 a 319 - c�digo do pagador na cooperativa
             $detalhe .= str_repeat("0", 6);               // 320 a 325 - filler
             $detalhe .= " ";                   // 326 - filler
             $detalhe .= str_pad($boleto->cliente->cep, 8, '0', STR_PAD_LEFT);       // 327 a 334 - cep do pagador
-            $detalhe .= "00000";                  // 335 a 339 - c�digo do pagador no cliente
+            $detalhe .= "00000";                  // 335 a 339 - codigo do pagador no cliente
             $detalhe .= str_repeat("0", 14);               // 340 a 353 - cpf do avalista
             $detalhe .= str_repeat(" ", 41);               // 354 a 394 - nome do avalista
             $detalhe .= str_pad($this->contador, 6, '0', STR_PAD_LEFT);        // 395 a 400

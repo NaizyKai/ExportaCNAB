@@ -63,7 +63,7 @@
 				<label for="CONT_REMESSA">NRO ULTIMA REMESSA: </label> 
 				<input type="text" name="CONT_REMESSA"  id="CONT_REMESSA"
 					   onkeypress="return validaEditInteger(event);" /> <br/>
-				<label for="ULT_NOSSONRO_GERADO">NRO ULTIMA NOSSO NRO: </label>             
+				<label for="ULT_NOSSONRO_GERADO">NRO ULTIMP NOSSO NRO: </label>             
 				<input type="text" name="ULT_NOSSONRO_GERADO" id="ULT_NOSSONRO_GERADO"
 					   onkeypress="return validaEditInteger(event);" /> <br/>
 				<label for="TX_BOLETO">TAXA BOLETO: </label> 
@@ -78,7 +78,7 @@
 				include_once('../dao/config.php');
 				$con = getConexao();
 				$codigo = filter_input(INPUT_GET, "editar");
-				$sql = "SELECT * FROM CONTAS WHERE CODIGO = " . $codigo;
+				$sql = "SELECT DESCRICAO, AGENCIA, CONTA, CONTA_DV, BANCO, COD_CEDENTE, CONT_REMESSA, ULTIMO_NOSSONRO_GERADO, TX_BOLETO, CODIGO FROM contas WHERE CODIGO = " . $codigo;
 				
 				if (!$res = mysqli_query($con, $sql, MYSQL_ASSOC)) {
 					die('Erro: ' . die(mysqli_error($con)));

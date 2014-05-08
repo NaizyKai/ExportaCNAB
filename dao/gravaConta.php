@@ -1,5 +1,6 @@
 <?php
-
+	header('Location: ../index.html');
+	
 	include_once("config.php");
 	$sql = "";
 
@@ -12,7 +13,6 @@
 			   "    ,ULTIMO_NOSSONRO_GERADO = \"" .filter_input(INPUT_POST, "ULT_NOSSONRO_GERADO")."\"".
 			   "    ,TX_BOLETO = \"".str_replace(",", ".", filter_input(INPUT_POST, "TX_BOLETO"))."\"".
 			   " WHERE CODIGO = \"".filter_input(INPUT_POST, "CODIGO")."\"";			   
-			  echo($sql);
 	} else {
 
 	$sql = "INSERT INTO CONTAS "
@@ -35,13 +35,11 @@
 			'".filter_input(INPUT_POST, "CONT_REMESSA")."',
 			'".filter_input(INPUT_POST, "ULT_NOSSONRO_GERADO")."',    
 			'".str_replace(",", ".", filter_input(INPUT_POST, "TX_BOLETO"))."')";
-			echo($sql);
 	}
 	$con = getConexao();
 
 	if (!mysqli_query($con, $sql)) {
 		die('Error: ' . mysqli_error($con));
 	}
-	header('Location: ../index.html');
 
 	mysqli_close($con);
