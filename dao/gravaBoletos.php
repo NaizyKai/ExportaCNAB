@@ -2,7 +2,7 @@
 
 include_once("config.php");
 
-$sql = "INSERT INTO BOLETOS "
+$sql = "INSERT INTO boletos "
         . "(COD_CLIENTE"
         . ",VENCIMENTO"
         . ",EMISSAO"

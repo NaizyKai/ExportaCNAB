@@ -5,7 +5,7 @@
 	$sql = "";
 
 	if ($_GET["oper"] == "edit") {
-		$sql = "UPDATE CONTAS " .
+		$sql = "UPDATE contas " .
 		       "SET AGENCIA = \"" .filter_input(INPUT_POST, "AGENCIA")."\"".
 			   "    ,CONTA = \"" .filter_input(INPUT_POST, "CONTA")."\"".
 			   "    ,CONTA_DV =  \"" .filter_input(INPUT_POST, "CONTA_DV")."\"".
@@ -15,7 +15,7 @@
 			   " WHERE CODIGO = \"".filter_input(INPUT_POST, "CODIGO")."\"";			   
 	} else {
 
-	$sql = "INSERT INTO CONTAS "
+	$sql = "INSERT INTO contas "
 			. "(DESCRICAO"
 			. ",AGENCIA"
 			. ",CONTA"

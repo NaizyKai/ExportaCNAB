@@ -2,7 +2,7 @@
 
 include_once("config.php");
 
-$sql = "INSERT INTO CEDENTES "
+$sql = "INSERT INTO cedentes "
         . "(NOME"
         . ",CPF_CNPJ"
         . ",TIPO_PESSOA"

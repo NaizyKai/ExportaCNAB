@@ -8,7 +8,7 @@ class GeradorRemessaSicredi {
 
     function salvaContagem($novaContagem) {
         $con = getConexao();
-        $sql = "update Contas set cont_remessa = " . $novaContagem . " where codigo = " . $this->conta->codigo;
+        $sql = "update contas set cont_remessa = " . $novaContagem . " where codigo = " . $this->conta->codigo;
 
         if (!mysqli_query($con, $sql)) {
             die('Erro: ' . mysqli_error($con));

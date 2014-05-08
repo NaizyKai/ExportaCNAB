@@ -5,19 +5,30 @@ include_once('../dao/getters.php');
 
 function gravaExportacao($conta) {
     $con = getConexao();
-    $sql_grava_exp = "INSERT INTO EXPORTACOES (CONTA) VALUES (?)";    
+    $sql_grava_exp = "INSERT INTO exportacoes (CONTA) VALUES (?)";    
     $stmt = mysqli_prepare($con, $sql_grava_exp);
+	if ($stmt === FALSE) {
+		die("ERRO: " . mysqli_error($con));
+	}	
     mysqli_stmt_bind_param($stmt, "i", $conta);
-    mysqli_stmt_execute($stmt);
+    if (!mysqli_stmt_execute($stmt)) {
+		die("ERRO: " . mysqli_error($con));
+	}
     mysqli_stmt_close($stmt);   
 }
 
 function getNextExportacao($conta) {
     $con = getConexao();
-    $sql_retorna_cod_exp = "SELECT count(chave) FROM EXPORTACOES WHERE CONTA = ? AND Cast(DATA_EXPORTACAO As Date) = Cast(NOW() As Date)";
+    $sql_retorna_cod_exp = "SELECT count(chave) FROM exportacoes WHERE CONTA = ? AND Cast(DATA_EXPORTACAO As Date) = Cast(NOW() As Date)";
     $stmt = mysqli_prepare($con, $sql_retorna_cod_exp);
-    mysqli_stmt_bind_param($stmt, "i", $conta);
-    mysqli_stmt_execute($stmt);
+	
+	if ($stmt === FALSE) {
+		die("ERRO: " . mysqli_error($con));
+	}
+    mysqli_stmt_bind_param($stmt, "i", $conta->codigo);
+    if (!mysqli_stmt_execute($stmt)) {
+		die("ERRO: " . mysqli_error($con));
+	}
     $chave = 0;
     mysqli_stmt_bind_result($stmt, $chave);
     mysqli_stmt_fetch($stmt);
@@ -45,8 +56,7 @@ function getNovoNome($conta) {
     }
     $ext = "";
     $qtdExp = getNextExportacao($conta);
-    print $qtdExp;
-    
+   
     if ($qtdExp == 0) {
         $ext = "crm";
     } else {

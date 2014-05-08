@@ -13,7 +13,7 @@
                     include_once('../dao/config.php');
 
                     $con = getConexao();
-                    $sql = "Select Descricao, Codigo From Contas order by Descricao";
+                    $sql = "Select Descricao, Codigo From contas order by Descricao";
                     if (!$res = mysqli_query($con, $sql, MYSQL_ASSOC)) {
                         die('Erro: ' . die(mysqli_error($con)));
                     }

@@ -34,14 +34,14 @@ function gravarBoletos($listaBoletos) {
     $con = getConexao();
     $bolNaoEncontrado = [];
     $sqlBusca = "SELECT CHAVE "
-            . "    FROM BOLETOS "
+            . "    FROM boletos "
             . "   WHERE VENCIMENTO = ?"
             . "     AND VALOR_BOLETO = ?"
             . "     AND NRO_DOCTO =  ?"
             . "     AND CONTA = ?"
             . "     AND PAGAMENTO <> 1";
 
-    $sqlUpdate = "UPDATE BOLETOS "
+    $sqlUpdate = "UPDATE boletos "
             . "      SET PAGAMENTO = 1, "
             . "          VALOR_PAGO = ?, "
             . "          DATA_PAGTO = ? "

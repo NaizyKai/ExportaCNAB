@@ -2,7 +2,7 @@
 
 include_once("config.php");
 
-$sql = "INSERT INTO CLIENTES (CEP, CIDADE, CPF_CNPJ, ENDERECO, NOME, TIPO_PESSOA, UF) " .
+$sql = "INSERT INTO clientes (CEP, CIDADE, CPF_CNPJ, ENDERECO, NOME, TIPO_PESSOA, UF) " .
         "VALUES (
        	'".filter_input(INPUT_POST, "CEP")."',
        	'".filter_input(INPUT_POST, "CIDADE")."',
