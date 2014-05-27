@@ -16,6 +16,39 @@ class GeradorRemessaSicredi {
         mysqli_close($con);
     }
 	
+	function gravaExportacaoDetalhe($exp) {
+		$con = getConexao();
+		$sql = "insert into exportacao_item (boleto_id, exportacao_id) values (?, ?)";
+		$stmt = mysqli_prepare($con, $sql);
+		if ($stmt === FALSE) {
+			die("ERRO: " . mysqli_error($con));
+		}
+		
+		foreach($this->listaBoletos as $boleto)  {
+			mysqli_stmt_bind_param($stmt, "ii", $boleto->chave, $exp);
+			if (!mysqli_stmt_execute($stmt)) {
+				die("ERRO: " . mysqli_error($con));
+			}
+		}
+		mysqli_stmt_close($stmt); 
+	}
+	
+	function gravaExportacao($conta, $contagem) {
+		$con = getConexao();
+		$sql_grava_exp = "INSERT INTO exportacoes (conta, remessa) VALUES (?, ?)";    
+		$stmt = mysqli_prepare($con, $sql_grava_exp);
+		if ($stmt === FALSE) {
+			die("ERRO: " . mysqli_error($con));
+		}	
+		mysqli_stmt_bind_param($stmt, "ii", $conta, $contagem);
+		if (!mysqli_stmt_execute($stmt)) {
+			die("ERRO: " . mysqli_error($con));
+		}
+		$resultado =  mysqli_insert_id($con);
+		mysqli_stmt_close($stmt);   
+		return $resultado;
+	}	
+	
 	
 	function removeMascara($Texto) {
 		$strChar = ".-/\\*,";
@@ -34,6 +67,8 @@ class GeradorRemessaSicredi {
         fwrite($arq, $saida);
         fclose($arq);
         $this->salvaContagem($this->conta->cont_remessa);
+		$chave_exp = $this->gravaExportacao($this->conta->codigo, $this->conta->cont_remessa);
+		$this->gravaExportacaoDetalhe($chave_exp);	
     }
 
     function geraHeaderArquivo() {

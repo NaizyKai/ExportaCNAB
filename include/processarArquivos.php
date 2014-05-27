@@ -15,5 +15,4 @@ $gerador->listaBoletos = $listaBol;
 $gerador->conta = getConta($_POST["conta"]);
 $gerador->geraRemessa($arq_nome);
 $novoNome = getNovoNome($_POST["conta"]);
-gravaExportacao($_POST["conta"]);
 header('Location: doDownload.php?conta='.$_POST["conta"]."&nome=". $novoNome);

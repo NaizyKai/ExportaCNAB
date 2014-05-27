@@ -24,7 +24,6 @@
 			echo("<table>");
 			echo("<tr>");
 			echo("<th>");
-			echo("Selecionar");
 			echo("</th>");
 			echo("<th>");
 			echo("Conta");
@@ -48,7 +47,7 @@
 			echo("</table>");
             echo("<br/>");
             ?>
-            <input type="submit" value="Estornar">
+            <input type="submit" value="Visualizar">
         </form>
     </body>
 </html>

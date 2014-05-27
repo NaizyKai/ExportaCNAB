@@ -3,20 +3,6 @@ include_once('../dao/config.php');
 include_once('classes.php');
 include_once('../dao/getters.php');
 
-function gravaExportacao($conta) {
-    $con = getConexao();
-    $sql_grava_exp = "INSERT INTO exportacoes (CONTA) VALUES (?)";    
-    $stmt = mysqli_prepare($con, $sql_grava_exp);
-	if ($stmt === FALSE) {
-		die("ERRO: " . mysqli_error($con));
-	}	
-    mysqli_stmt_bind_param($stmt, "i", $conta);
-    if (!mysqli_stmt_execute($stmt)) {
-		die("ERRO: " . mysqli_error($con));
-	}
-    mysqli_stmt_close($stmt);   
-}
-
 function getNextExportacao($conta) {
     $con = getConexao();
     $sql_retorna_cod_exp = "SELECT count(chave) FROM exportacoes WHERE CONTA = ? AND Cast(DATA_EXPORTACAO As Date) = Cast(NOW() As Date)";
