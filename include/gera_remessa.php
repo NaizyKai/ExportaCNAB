@@ -5,6 +5,7 @@ class GeradorRemessaSicredi {
     public $conta;
     public $listaBoletos;
     private $contador = 0;
+	public $exp = 0;
 
     function salvaContagem($novaContagem) {
         $con = getConexao();
@@ -66,9 +67,11 @@ class GeradorRemessaSicredi {
         $arq = fopen($outputArquivo, "w");
         fwrite($arq, $saida);
         fclose($arq);
-        $this->salvaContagem($this->conta->cont_remessa);
-		$chave_exp = $this->gravaExportacao($this->conta->codigo, $this->conta->cont_remessa);
-		$this->gravaExportacaoDetalhe($chave_exp);	
+		if ($this->exp == 0) {
+			$this->salvaContagem($this->conta->cont_remessa);
+			$chave_exp = $this->gravaExportacao($this->conta->codigo, $this->conta->cont_remessa);
+			$this->gravaExportacaoDetalhe($chave_exp);	
+		}
     }
 
     function geraHeaderArquivo() {

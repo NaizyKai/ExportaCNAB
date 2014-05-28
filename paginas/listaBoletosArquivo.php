@@ -80,6 +80,7 @@
             <div id="div_contas">
             </div>
             <br/>
+			<input type="hidden" id="exportacao" name="exportacao" value="<?php echo((isset($_GET["exportacao"])) ? $_GET["exportacao"] : "0"); ?>" />
             <input type="submit" value="Enviar" >
         </form>
     </body>

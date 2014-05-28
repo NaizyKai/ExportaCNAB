@@ -1,6 +1,7 @@
 <!-- include/manutencao_exp.php -->
 <?php
 	include_once("../dao/config.php");
+	include_once("classes.php");
 	class ManutencaoExportacao {
 
 		private $conexao = null;
@@ -9,18 +10,19 @@
 			$this->conexao = getConexao();
 		}
 	
-		function AdicionarBoleto($Boleto, $Exportacao) {
+		function AdicionarBoleto($Boletos, $Exportacao) {
 			$sql = "Insert into exportacao_item (boleto_id, exportacao_id) values (?, ?)";
 			$stmt = mysqli_prepare($this->conexao, $sql);
 			
 			if ($stmt === FALSE) {
 				die("ERRO: " . mysqli_error($con));
 			}	
-			
-			mysqli_stmt_bind_param($stmt, "ii", $Boleto, $Exportacao);
-			
-			if (!mysqli_stmt_execute($stmt)) {
-				die("ERRO: " . mysqli_error($con));
+			foreach($Boletos as $boleto) {
+				mysqli_stmt_bind_param($stmt, "ii", $boleto->chave, $Exportacao);
+						
+				if (!mysqli_stmt_execute($stmt)) {
+					die("ERRO: " . mysqli_error($con));
+				}
 			}
 			mysqli_stmt_close($stmt);
 		
@@ -119,23 +121,27 @@
 	
 		$acao = $_GET["action"];
 		
-		if (($acao == "remove") && isset($_GET["exp"]) && isset($_GET["boleto"])) {
+		if (($acao == "getexplivre") && isset($_GET["conta"])) {
 			$manut = new ManutencaoExportacao();
-			$manut->RemoverBoleto($_GET["boleto"], $_GET["exp"]);
-		}
-		
-		if (($acao == "add") && isset($_GET["exp"]) && isset($_GET["boleto"])) {
-			$manut = new ManutencaoExportacao();
-			$manut->AdicionarBoleto($_GET["boleto"], $_GET["exp"]);
-		}	
-		
-		if (($acao == "removeexp") && isset($_GET["exp"])) {
-			$manut = new ManutencaoExportacao();
-			$manut->ExcluirExportacao($_GET["exp"]);
-		}	
-		
-		if (($acao == "getexplivre") && isset($_GET["exp"])) {
-			$manut = new ManutencaoExportacao();
-			$manut->ExcluirExportacao($_GET["exp"]);
+			$manut->GetIdExportacaoLivre($_GET["conta"]);
+		} else {		
+			
+			if (($acao == "remove") && isset($_GET["exp"]) && isset($_GET["boleto"])) {
+				$manut = new ManutencaoExportacao();
+				$manut->RemoverBoleto($_GET["boleto"], $_GET["exp"]);
+			}
+			
+			if (($acao == "add") && isset($_GET["exp"]) && isset($_GET["boletos"])) {
+				$manut = new ManutencaoExportacao();
+				$boletos = unserialize($_GET["boletos"]); 
+				$manut->AdicionarBoleto($boletos, $_GET["exp"]);
+			}	
+			
+			if (($acao == "removeexp") && isset($_GET["exp"])) {
+				$manut = new ManutencaoExportacao();
+				$manut->ExcluirExportacao($_GET["exp"]);
+			}	
+			
+			header('Location: ../paginas/listaExportacoes.php');
 		}
 	}

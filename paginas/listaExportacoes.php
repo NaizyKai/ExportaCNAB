@@ -5,7 +5,7 @@
         <script type="text/javascript" src="../ajax.js"></script>
     </head>
     <body>
-        <form action="../include/processarArquivos.php" method="POST" name="frmProcessar">
+        <form action="viewExportacaoDetalhe.php" method="POST" name="frmProcessar">
             <?php
             include_once('../dao/config.php');
 
@@ -35,7 +35,7 @@
 			while ($escrever = mysqli_fetch_array($res)) {
 				echo("<tr>");
 				echo("<td>");
-				echo("<input type=\"radio\" name=\"exportacao\" value=\"" . $escrever["chave"] . "\">");
+				echo("<input type=\"radio\" name=\"exp\" value=\"" . $escrever["chave"] . "\">");
 				echo("</td>");
 				echo("<td>");
 				echo($escrever["descricao"]);

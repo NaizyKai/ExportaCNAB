@@ -6,7 +6,8 @@
 	. "FROM boletos b INNER JOIN clientes cli "
 	. "ON b.cod_cliente = cli.codigo "
 	. "WHERE b.pagamento = 0 "
-	. " and b.conta = " . filter_input(INPUT_GET, "conta");
+	. " and b.conta = " . filter_input(INPUT_GET, "conta")
+	. " and b.chave not in (select boleto_id from exportacao_item)";
 	
 	if (isset($_GET["data_ini"])){
 		$sql .= " and b.emissao >= \"" . filter_input(INPUT_GET, "data_ini") . "\"";

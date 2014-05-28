@@ -87,3 +87,51 @@ function getBoleto($chave) {
     mysqli_close($con);
     return $boleto;
 }
+
+function getContaFromExportacao($exportacao) {
+    $con = getConexao();
+    $sql = "select * from contas where codigo = (select conta from exportacoes where chave = ". $exportacao .")";
+    if (!$res = mysqli_query($con, $sql, MYSQL_ASSOC)) {
+        die('Erro: ' . die(mysqli_error($con)));
+    }
+    $conta = new Conta();
+    if ($escrever = mysqli_fetch_array($res)) {
+        $conta->agencia = $escrever["AGENCIA"];
+        $conta->banco = $escrever["BANCO"];
+        $conta->conta = $escrever["CONTA"];
+        $conta->conta_dv = $escrever["CONTA_DV"];
+        $conta->cont_remessa = $escrever["CONT_REMESSA"];
+        $conta->descricao = $escrever["DESCRICAO"];
+        $conta->tx_boleto = $escrever["TX_BOLETO"];
+        $conta->cedente = getCedente($escrever["COD_CEDENTE"]);
+        $conta->codigo = $escrever["CODIGO"];
+		$conta->ultimo_nossonro_gerado = $escrever["ULTIMO_NOSSONRO_GERADO"];
+    }
+    mysqli_close($con);
+    return $conta;
+}
+
+
+function getBoletosFromExportacao($exportacao) {
+    $con = getConexao();
+    $sql = "select * from boletos where chave in (select boleto_id from exportacao_item where exportacao_id = " . $exportacao . ")";
+    if (!$res = mysqli_query($con, $sql, MYSQL_ASSOC)) {
+        die('Erro: ' . die(mysqli_error($con)));
+    }
+    
+	$listaBol = array();
+    while ($escrever = mysqli_fetch_array($res)) {
+		$boleto = new Boleto();
+        $boleto->chave = $escrever["CHAVE"];
+        $boleto->cliente = getCliente($escrever["COD_CLIENTE"]);
+        $boleto->emissao = $escrever["EMISSAO"];
+        $boleto->vencimento = $escrever["VENCIMENTO"];
+        $boleto->nosso_numero = $escrever["NOSSO_NUMERO"];
+        $boleto->nro_docto = $escrever["NRO_DOCTO"];
+        $boleto->valor_boleto = $escrever["VALOR_BOLETO"];
+        $boleto->pagamento = $escrever["PAGAMENTO"];
+		array_push($listaBol, $boleto);
+    }
+    mysqli_close($con);
+    return $listaBol;
+}

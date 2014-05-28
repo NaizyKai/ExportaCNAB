@@ -3,9 +3,13 @@ include_once('../dao/config.php');
 include_once('classes.php');
 include_once('../dao/getters.php');
 
-function getNextExportacao($conta) {
+function getNextExportacao($conta, $exportacao) {
     $con = getConexao();
-    $sql_retorna_cod_exp = "SELECT count(chave) FROM exportacoes WHERE CONTA = ? AND Cast(DATA_EXPORTACAO As Date) = Cast(NOW() As Date)";
+	if ($exportacao > 0) {
+		$sql_retorna_cod_exp = "SELECT count(chave) FROM exportacoes WHERE CONTA = ? AND Cast(DATA_EXPORTACAO As Date) = Cast(NOW() As Date)";
+	} else {
+		$sql_retorna_cod_exp = "SELECT count(chave) FROM exportacoes WHERE CONTA = ? AND DATA_EXPORTACAO > (SELECT DATA_EXPORTACAO FROM exportacoes WHERE CHAVE = " . $exportacao .")";
+	}
     $stmt = mysqli_prepare($con, $sql_retorna_cod_exp);
 	
 	if ($stmt === FALSE) {
@@ -25,7 +29,7 @@ function getNextExportacao($conta) {
     return $chave;
 }
 
-function getNovoNome($conta) {
+function getNovoNome($conta, $exportacao) {
     $conta = getConta($conta);
     $mes = (int)date("m");
     
@@ -41,7 +45,7 @@ function getNovoNome($conta) {
             break;
     }
     $ext = "";
-    $qtdExp = getNextExportacao($conta);
+    $qtdExp = getNextExportacao($conta, $exportacao);
    
     if ($qtdExp == 0) {
         $ext = "crm";
